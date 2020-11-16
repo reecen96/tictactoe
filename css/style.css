@@ -1,1 +1,80 @@
 
+
+
+
+
+/* body {
+ background-image: url("file:///Users/sofoklisnimo/SEI/projects/tic-tac-toe/project%200%20images/castle%202/ezgif.com-gif-maker.gif");
+ background-color: blue;
+ background-repeat: no-repeat;
+ background-size: cover;
+} */
+
+#menu{
+box-sizing: border-box;
+float: left;
+width: 20%;
+padding: 50px;
+border-style: outset;
+background-color: white;
+border-color: grey;
+font-family: 'Press Start 2P', cursive;
+text-align: left;
+}
+
+h1 {
+  text-align: center;
+  font-family: 'Press Start 2P', cursive;
+  color: white;
+}
+
+td {
+  width: 100px;
+  height: 100px;
+}
+table {
+  margin: 5px auto;
+}
+.vert {
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+}
+.hori {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+.x1, .x2, .x3, .x4, .x5, .x6, .x7, .x8, .x9{
+height: 60%;
+width: auto;
+left: 25%;
+position: relative;
+opacity: 0;
+
+}
+
+.o1, .o4, .o7{
+  height: 10%;
+  width: auto;
+left: 30%;
+position: absolute;
+opacity: 0;
+
+}
+
+.o2, .o5, .o8{
+  height: 10%;
+  width: auto;
+left: 46%;
+position: absolute;
+opacity: 0;
+
+}
+
+.o3, .o6, .o9{
+  height: 10%;
+  width: auto;
+left: 60%;
+position: absolute;
+opacity: 0;
+}
