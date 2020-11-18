@@ -1,209 +1,237 @@
-console.log("hey")
 
-//if player = 0 (o goes)/ if player = 1 (x goes)
-var playerTurn = 1
-var squaresChosen= []
-var playO = []
-var playX = []
+
+//---------Variables-------//
+var playerTurn = 0
+//total number of clicked buttons
+//values for HTML scoreboard
 var oScore = 0
 var xScore = 0
+//values for Tic Tac Toe
+var diagonal = 0;
+var antiDiagonal = 0;
+var rows =[]
+var cols =[]
+//dimenstions of the Tic Tac Toe board
+var dimensions = 0
+var totalmoves = 0
+var moves = 0
+//------------------------//
 
-const addXO = function(variable){
+$(document).ready(function(){
+  const dimen = $('.dimen').html()
+    dimensions = parseInt(dimen)
+    totalmoves = dimen*dimen
+  resetNumber(dimen)
+  aiEasyFunc()
+})
 
-  if(!squaresChosen.includes(variable)) {
+function resetNumber(dimens){
+  moves =0
+  for (i=0; i<dimens; i++){
+    rows.push(0)
+    cols.push(0)
+}}
 
+
+//function runs when button has been clicked - determins if button has already been clicked and then actions this
+function addXO(col, row) {
+  if(checkSquare(col,row)){
+    disappear(col, row)
+    move(col, row ,playerTurn)
+    console.log("rows: "+rows+"cols: "+cols)
+    playerTurner()
+    aiEasyFunc()
+} else aiEasyFunc()}
+
+
+//changes player from X to O
+function playerTurner(){
   if (playerTurn === 0){
     playerTurn = 1
-    squaresChosen.push(variable)
-    playO.push(variable)
-    disappear(variable)
-    containsAll(playO);
-
-  }
-
+}
   else if (playerTurn === 1){
     playerTurn = 0
-    squaresChosen.push(variable)
-    playX.push(variable)
-    disappear(variable)
-    containsAll(playX);
-  }
+}}
 
-  else{
-    return
-  }
-}
-}
 
+//returns the name of the player (number to name)
 function whoPlayer (player){
   if (player === 1){
     return "X"
   }
   else if (player === 0){
     return "O"
+  }}
+
+
+
+
+function move(row, col, player) {
+
+    var toAdd = (player === 1) ? 1 : -1;
+     rows[row] += toAdd;
+     cols[col] += toAdd;
+    if (row === col) {
+         diagonal += toAdd;}
+
+    if (col === (cols.length - row - 1)) {
+         antiDiagonal += toAdd;}
+
+    var size = rows.length;
+    if (Math.abs(rows[row]) === size ||
+        Math.abs(cols[col]) === size ||
+        Math.abs(diagonal) === size  ||
+        Math.abs(antiDiagonal) === size) {
+          win()}
+
+    else {
+      draw()
+      turnMenu()
+      return
+  }};
+
+
+
+
+//function runs if player wins - clears board and adds score
+function win(){
+  addToLocalUpdate ()
+  alert(whoPlayer(playerTurn) + " wins!")
+  score()
+  playerTurner()
+  clearBoard()}
+
+
+//function adds +1 to variable moves - runs if moves > total availible spaces
+function draw(){
+  moves += 1
+
+  if (moves >=  totalmoves){
+    clearBoard()
+    return}
+  else return}
+
+
+// Shows current player on HTML
+function turnMenu () {
+  if (playerTurn == 1){
+    $('#turnMenu').text('O')
+    }
+  else if (playerTurn ==0){
+    $('#turnMenu').text('X')
+    }
+}
+
+//function to clear board - resets all variables & hides buttons
+function clearBoard(){
+  playerTurn = 1
+  rows = []
+  cols = []
+  resetNumber(dimensions)
+  squaresChosen= []
+  diagonal = 0;
+  antiDiagonal = 0;
+  $('img').attr('src', '')
+  $('img').css('opacity','0')
+  return;}
+
+
+//function to update current player on HTML
+function score (){
+  console.log("you score!!")
+  if (playerTurn === 0){
+      oScore += 1
+      $('#scoreO').text(oScore)
+}
+  if (playerTurn === 1){
+     xScore +=1
+    $('#scoreX').text(xScore)
   }
 }
 
-//player is either X or O (compares array of player to possibleWins)
-function containsAll(player){
- for(var i=0; i<possibleWins.length; i++){
 
-  var a = possibleWins[i][0];
-  var b = possibleWins[i][1];
-  var c = possibleWins[i][2];
-  console.log(a + " "+ b +" "+ c)
 
- if (player.includes(a) && player.includes(b) && player.includes(c)){
-   alert(whoPlayer(playerTurn) + " wins!")
-   clearBoard()
-  score(playerTurn)}
- }
+$(document).on("click", 'td', function(event){
+  const column = (event.target.id)
+  const row = (event.target.className)
+
+  if(row === "pic"){
+    return;
+  }
+  else{
+    addXO(column, row, moves)
+    console.log ('clicked column: '+column+'row: '+row+ 'moves: '+moves)
+  }
+})
+
+
+
+const checkSquare= function(col, row){
+  const imageReplace = ("td#"+col+"."+row)
+  console.log(imageReplace)
+ jQuery = $(imageReplace).children()
+
+  if (jQuery.css('opacity')==0){
+    return true;
+  }
+  if (jQuery.css('opacity')==1){
+  return false;
+  }
 }
 
 
-const possibleWins = [
-[1, 2, 3],
-[4, 5, 6],
-[7, 8, 9],
-[1, 4, 7],
-[2, 5, 8],
-[3, 6, 9],
-[1, 5, 9],
-[5, 5, 3]
-]
+//local storage
 
-function clearBoard(){
-playerTurn = 1
-squaresChosen= []
-playO = []
-playX = []
-$('img').css('opacity', '0')
+function addToLocalUpdate (){
+  const localX = parseInt(localStorage.getItem("Xwin"))+1
+  const localO = parseInt(localStorage.getItem("Owin"))+1
+
+if (playerTurn===1){
+localStorage.setItem("Xwin", localX)
+}
+if (playerTurn===0){
+localStorage.setItem("Owin", localO)
+}
+  }
+
+
+
+const disappear= function(col, row){
+  const imageReplace = ("td#"+col+"."+row)
+   jQuery = $(imageReplace).children()
+
+   if (playerTurn === 1){
+    jQuery.attr('src', 'http://clipart-library.com/image_gallery/83903.png')
+    jQuery.css('opacity', '1')}
+
+   if (playerTurn === 0){
+    jQuery.attr('src', 'http://clipart-library.com/image_gallery/7606.png')
+    jQuery.css('opacity', '1')
+    }
 }
 
-function score (player){
-if (playerTurn === 1){
-oScore += 1
-$('#scoreO').text(oScore)
-console.log ("Score O =" + oScore + " x="+ xScore )
-}
-else if (playerTurn === 0){
-xScore +=1
-$('#scoreX').text(xScore)
-console.log ( "Score O =" + xScore + " x="+ xScore )}
-}
 
 $(document).ready(function(){
   console.log ('DOM is ready')
 
+$(document).ready(function(){
+  $( "#xStat" ).text("hello")
+  $( "#oStat" ).text("hello")
+})
 
-  $('.o1').on("click", function(){
-    console.log("o1 clicked")
-    addXO(1)
+  $('#easy').on("click", function(){
+  ai = 1
+aiEasyFunc()})
 
-    })
+  $('#reset').on("click", function(){
+  ai = 0
+aiEasyFunc()})
 
-  $('.o2').on("click", function(){
-    console.log("o2 clicked")
-    addXO(2)
-    })
+  $('#medium').on("click", function(){
+  ai = 2
+aiEasyFunc()})
 
-  $('.o3').on("click", function(){
-    console.log("o3 clicked")
-    addXO(3)
-    })
-
-  $('.o4').on("click", function(){
-    console.log("o4 clicked")
-    addXO(4)
-    })
-
-  $('.o5').on("click", function(){
-    console.log("o5 clicked")
-    addXO(5)
-    })
-
-  $('.o6').on("click", function(){
-    console.log("o6 clicked")
-    addXO(6)
-    })
-
-  $('.o7').on("click", function(){
-    console.log("o7 clicked")
-    addXO(7)
-    })
-
-  $('.o8').on("click", function(){
-    console.log("o8 clicked")
-    addXO(8)
-    })
-
-  $('.o9').on("click", function(){
-    console.log("o9 clicked")
-    addXO(9)
-    })
-
+  $('#hard').on("click", function(){
+  ai = 3
+aiEasyFunc()})
 });
-
-const disappear= function(location){
-if (playerTurn === 0){
- if (location === 1){
-   $('.o1').css('opacity', '1')
-}
- if (location === 2){
-   $('.o2').css('opacity', '1')
-}
- if (location === 3){
-   $('.o3').css('opacity', '1')
-}
- if (location === 4){
-   $('.o4').css('opacity', '1')
-}
- if (location === 5){
-   $('.o5').css('opacity', '1')
-}
- if (location === 6){
-   $('.o6').css('opacity', '1')
-}
- if (location === 7){
-   $('.o7').css('opacity', '1')
-}
- if (location === 8){
-   $('.o8').css('opacity', '1')
-}
- if (location === 9){
-   $('.o9').css('opacity', '1')
-}
-}
-
-else if (playerTurn === 1){
-  if (location === 1){
-    $('.x1').css('opacity', '1')
- }
-  if (location === 2){
-    $('.x2').css('opacity', '1')
- }
-  if (location === 3){
-    $('.x3').css('opacity', '1')
- }
-  if (location === 4){
-    $('.x4').css('opacity', '1')
- }
-  if (location === 5){
-    $('.x5').css('opacity', '1')
- }
-  if (location === 6){
-    $('.x6').css('opacity', '1')
- }
-  if (location === 7){
-    $('.x7').css('opacity', '1')
- }
-  if (location === 8){
-    $('.x8').css('opacity', '1')
- }
-  if (location === 9){
-    $('.x9').css('opacity', '1')
- }
-}
-
-
-}

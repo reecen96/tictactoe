@@ -3,21 +3,34 @@
 
 
 
-/* body {
- background-image: url("file:///Users/sofoklisnimo/SEI/projects/tic-tac-toe/project%200%20images/castle%202/ezgif.com-gif-maker.gif");
- background-color: blue;
- background-repeat: no-repeat;
- background-size: cover;
-} */
+body {
+ background-color: black;
+}
+
+#gameBox{
+  position: fixed;
+  top: 8%;
+  left: 10%;
+  width: 80%;
+  height:80%;
+  background-image: url('file:///Users/sofoklisnimo/SEI/projects/tic-tac-toe/projectimages/castle%202/ezgif.com-gif-maker.gif');
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -1;
+  border-style: outset;
+}
 
 #menu{
-box-sizing: border-box;
-float: left;
+position: absolute;
+bottom:0;
+/* box-sizing: border-box; */
+float: bottom left;
 width: 20%;
-padding: 50px;
+padding: 5px;
 border-style: outset;
-background-color: white;
-border-color: grey;
+background-color: grey;
+border-color: white;
+color: white;
 font-family: 'Press Start 2P', cursive;
 text-align: left;
 }
@@ -29,12 +42,20 @@ h1 {
 }
 
 td {
-  width: 100px;
-  height: 100px;
+  width: 20%;
+  height: 20%;
+  background-color: white;
+
 }
 table {
+  width: 300px;
+  height: 300px;
+  top: 40%;
   margin: 5px auto;
+  position: relative;
 }
+
+
 .vert {
   border-left: 2px solid black;
   border-right: 2px solid black;
@@ -44,37 +65,28 @@ table {
   border-bottom: 2px solid black;
 }
 
-.x1, .x2, .x3, .x4, .x5, .x6, .x7, .x8, .x9{
-height: 60%;
+img{
+height: 20%;
+opacity: 0;
 width: auto;
-left: 25%;
+left: auto;
 position: relative;
-opacity: 0;
-
 }
 
-.o1, .o4, .o7{
-  height: 10%;
-  width: auto;
-left: 30%;
-position: absolute;
-opacity: 0;
 
-}
-
-.o2, .o5, .o8{
-  height: 10%;
-  width: auto;
-left: 46%;
-position: absolute;
-opacity: 0;
-
-}
-
-.o3, .o6, .o9{
-  height: 10%;
-  width: auto;
-left: 60%;
-position: absolute;
-opacity: 0;
+#mainMenu {
+box-sizing: border-box;
+width:300px;
+height:300px;
+position: fixed;
+background-color: grey;
+top: 50%;
+left: 50%;
+margin-top: -100px;
+margin-left: -100px;
+border-style: outset;
+font-family: 'Press Start 2P', cursive;}
+a:link, a:visited{
+  text-decoration: none;
+  color: black;
 }
