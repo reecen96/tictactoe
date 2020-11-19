@@ -1,14 +1,18 @@
-//https://gist.github.com/textchimp/afcb3ddc676dccd59ccb18cb9391c87a//
 
+
+//----------1. determines if AI is active---------//
 //determines which AI type to use (0 = pvp, 1= easy(random), 2=Medium(pre determined moves), 3=)
 var ai= 0
 
 
+//----------2. actions AI moves---------//
 //actions AI move
 function actionMove (col, row){
   addXO(col,row)
 }
 
+
+//----------3. determine which AI to use---------//
 //determins which AI to use & if it is the AI's turn
 function aiFunc(){
   if (playerTurn ==1){
@@ -24,6 +28,7 @@ function aiFunc(){
   }
 }
 
+//----------4. Easy AI---------//
 //Easy AI (random moves)
 function pickSquare (){
   var col =0
@@ -33,6 +38,8 @@ function pickSquare (){
   actionMove(col,row)
 }
 
+
+//----------5. Medium AI---------//
 //Medium AI (pre-determined moves)
 function mediumAI(){
   const random = Math.floor(Math.random() * dimensions)
