@@ -306,6 +306,8 @@ $('#timedGame').on("click", function(){
   if (timedGames==0){
     timedGames =1
     timeFunc()
+    ai = 2
+    aiFunc()
   }
 
   if (timedGames==1){
