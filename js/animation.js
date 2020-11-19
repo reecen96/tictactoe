@@ -73,7 +73,7 @@ var sec = 20
 var timeFunc = function (){
   if(timedGames == 1){
     var timer = setInterval(function() {
-       $('.timer').text("time: " +sec--);
+       $('.timer').text("Time: " +sec--);
        if (sec == -1) {
           clearInterval(timer);
           sec = 15

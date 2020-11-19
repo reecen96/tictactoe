@@ -21,13 +21,13 @@ var moves = 0
 //----------1. ready page on load---------//
 //This sets the dimensions & total moves when the game loads//
 $(document).ready(function(){
-    tableBuild()
-    resetNumber()
-    aiFunc()
-    $("#statX").html("X:"+parseInt(localStorage.getItem("Xwin")))
-    $("#timedBoard").html(localStorage.getItem("scores"))
-    $("#statO").html("O:"+parseInt(localStorage.getItem("Owin")))
-    $("#clicks").html("Total page clicks: "+parseInt(localStorage.getItem("clicks")))
+  tableBuild()
+  resetNumber()
+  aiFunc()
+  $("#statX").html("X:"+parseInt(localStorage.getItem("Xwin")))
+  $("#timedBoard").html(localStorage.getItem("scores"))
+  $("#statO").html("O:"+parseInt(localStorage.getItem("Owin")))
+  $("#clicks").html("Total page clicks: "+parseInt(localStorage.getItem("clicks")))
 })
 
 
@@ -244,10 +244,9 @@ jQuery(document).ready(function($){
 //----------14. Leaderboard update--------//
 
 function updateLeaderboard (name, score){
-var input = ["'"+name+"'"+" - "+score + " points   <br>"]
-console.log(input)
-var scoreBoards= (localStorage.getItem("scores"))+input
-localStorage.setItem("scores", scoreBoards)
+  var input = ["'"+name+"'"+" - "+score + " points   <br>"]
+  var scoreBoards= (localStorage.getItem("scores"))+input
+  localStorage.setItem("scores", scoreBoards)
 }
 
 
@@ -317,9 +316,6 @@ $('#timedGame').on("click", function(){
 
 $("#submitButt").click(function(){
   name= $("#nameInput").val();
-  console.log (name)
 })
-
-
 
 });

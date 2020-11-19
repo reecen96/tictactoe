@@ -35,12 +35,13 @@ body {
   text-align: center;
   font-family: 'Press Start 2P', cursive;
   text-align: left;
+  
 }
 
 #menu2{
   position: fixed;
   bottom:2%;
-  left: 78%;
+  left: 75%;
   float: bottom right;
   width: 30%;
   padding: 5px;
@@ -182,8 +183,9 @@ a:link, a:visited{
 }
 
 .timer {
-background-color: #404040;
-color: #000000;
+  font-size: 30px;
+/* background-color: #404040; */
+color: yellow;
 }
 
 #statX{
