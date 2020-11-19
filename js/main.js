@@ -1,5 +1,4 @@
 
-
 //---------Variables-------//
 var playerTurn = 0
 //total number of clicked buttons
@@ -12,226 +11,256 @@ var antiDiagonal = 0;
 var rows =[]
 var cols =[]
 //dimenstions of the Tic Tac Toe board
-var dimensions = 0
+var dimensions = 3
 var totalmoves = 0
 var moves = 0
 //------------------------//
 
+
+
+//This sets the dimensions & total moves when the game loads//
 $(document).ready(function(){
-  const dimen = $('.dimen').html()
-    dimensions = parseInt(dimen)
-    totalmoves = dimen*dimen
-  resetNumber(dimen)
-  aiEasyFunc()
+    tableBuild()
+    resetNumber()
+    aiFunc()
+    $("#statX").html("X:"+parseInt(localStorage.getItem("Xwin")))
+    $("#statO").html("O:"+parseInt(localStorage.getItem("Owin")))
+    $("#clicks").html("Total page clicks: "+parseInt(localStorage.getItem("clicks")))
 })
 
-function resetNumber(dimens){
+//Creates the rows/columns for var row/cols & resets total moves
+function resetNumber(){
+  console.log($('.pic'))
+  console.log("Reset number Opacity ",$('#0.0').css('opacity'))
+  $('.pic').css('opacity','0 !important')
+  $('#0.0').css('opacity','0 !important')
+  console.log("Reset number Opacity ",$('#0.0').css('opacity'))
+  $('.pic').attr('src', '')
+  $('#fighters').css('opacity','1')
+  totalmoves = dimensions*dimensions
+  rows = []
+  cols = []
+  squaresChosen= []
+  diagonal = 0;
+  antiDiagonal = 0;
   moves =0
-  for (i=0; i<dimens; i++){
-    rows.push(0)
-    cols.push(0)
+  for (i=0; i<dimensions; i++){
+  rows.push(0)
+  cols.push(0)
+
 }}
 
 
 //function runs when button has been clicked - determins if button has already been clicked and then actions this
 function addXO(col, row) {
+//runs function checkSquare to check is square has been previously clicked
   if(checkSquare(col,row)){
-    disappear(col, row)
+    appear(col, row)
     move(col, row ,playerTurn)
-    console.log("rows: "+rows+"cols: "+cols)
     playerTurner()
-    aiEasyFunc()
-} else aiEasyFunc()}
+    aiFunc()
+  }  else {
+    aiFunc()
+  }
+}
 
 
 //changes player from X to O
 function playerTurner(){
   if (playerTurn === 0){
     playerTurn = 1
+    $('#turnMenu').text('X')
+    activateAuto1()
 }
   else if (playerTurn === 1){
     playerTurn = 0
+    $('#turnMenu').text('O')
+    activateAuto2()
 }}
 
 
-//returns the name of the player (number to name)
-function whoPlayer (player){
-  if (player === 1){
-    return "X"
+
+  //function runs if player wins - clears board and adds score
+  function win(){
+    resetNumber()
+    console.log("Opacity ",$('#0.0').css('opacity'))
+    score()
+    winMessage()
+    playerTurner()
+    $('.pic').css('opacity','0 !important')
+    console.log("Opacity ",$('#0.0').css('opacity'))
   }
-  else if (player === 0){
-    return "O"
-  }}
+
+
+    //function adds +1 to variable moves - runs if moves > total availible spaces
+  function moveCount(){
+    moves += 1
+    //if total moves made = total availible moves there has been a draw
+    if (moves >=  totalmoves){
+        resetNumber()
+        gameDraw()
+    }
+
+  }
 
 
 
-
+//determins where move is made on board - updates VAR rows, col, diagonal, antiDiagonal
 function move(row, col, player) {
-
+  //-diagonal is O, +diagonal is X
     var toAdd = (player === 1) ? 1 : -1;
-     rows[row] += toAdd;
-     cols[col] += toAdd;
+    rows[row] += toAdd;
+    cols[col] += toAdd;
     if (row === col) {
          diagonal += toAdd;}
-
-    if (col === (cols.length - row - 1)) {
+    if ((parseInt(col)+parseInt(row))== (cols.length-1)) {
          antiDiagonal += toAdd;}
 
+//calculates if entire row/col/diag/antidiag has been set - if true player wins
     var size = rows.length;
     if (Math.abs(rows[row]) === size ||
         Math.abs(cols[col]) === size ||
         Math.abs(diagonal) === size  ||
         Math.abs(antiDiagonal) === size) {
-          win()}
-
+          win()
+}
+//if player does not win - turn to next player and determine if there has been a draw
     else {
-      draw()
-      turnMenu()
+      moveCount()
       return
   }};
 
 
 
 
-//function runs if player wins - clears board and adds score
-function win(){
-  addToLocalUpdate ()
-  alert(whoPlayer(playerTurn) + " wins!")
-  score()
-  playerTurner()
-  clearBoard()}
+//table builder
+function tableBuild(){
+var table ='';
 
-
-//function adds +1 to variable moves - runs if moves > total availible spaces
-function draw(){
-  moves += 1
-
-  if (moves >=  totalmoves){
-    clearBoard()
-    return}
-  else return}
-
-
-// Shows current player on HTML
-function turnMenu () {
-  if (playerTurn == 1){
-    $('#turnMenu').text('O')
-    }
-  else if (playerTurn ==0){
-    $('#turnMenu').text('X')
-    }
+for (var r=0; r< dimensions;r++){
+  table += '<tr>'
+  for (var c=0; c< dimensions; c++){
+  table += '<td ' +'class='+r +' id='+ c +'> '+ '<img class=pic src=""> ' +'</td>'
+  }
+  table += '</tr>'
+}
+$('#ticTac').html(table)
 }
 
-//function to clear board - resets all variables & hides buttons
-function clearBoard(){
-  playerTurn = 1
-  rows = []
-  cols = []
-  resetNumber(dimensions)
-  squaresChosen= []
-  diagonal = 0;
-  antiDiagonal = 0;
-  $('img').attr('src', '')
-  $('img').css('opacity','0')
-  return;}
 
-
-//function to update current player on HTML
+//function to update score player on HTML
 function score (){
-  console.log("you score!!")
+  const localO = parseInt(localStorage.getItem("Owin"))+1
+  const localX = parseInt(localStorage.getItem("Xwin"))+1
+
   if (playerTurn === 0){
       oScore += 1
-      $('#scoreO').text(oScore)
+      $('#scoreO').text("O wins: " +oScore)
+      localStorage.setItem("Owin", localO)
+
 }
   if (playerTurn === 1){
      xScore +=1
-    $('#scoreX').text(xScore)
+    $('#scoreX').text("xWins: " +xScore)
+    localStorage.setItem("Xwin", localX)
   }
 }
 
 
-
+// returns the X&Y coordinatants of box clicked
 $(document).on("click", 'td', function(event){
   const column = (event.target.id)
   const row = (event.target.className)
-
+//return if image clicked
   if(row === "pic"){
     return;
   }
   else{
+    console.log("clicked ADDXO")
     addXO(column, row, moves)
-    console.log ('clicked column: '+column+'row: '+row+ 'moves: '+moves)
   }
 })
 
 
-
+//this makes chosen square visible (function)
 const checkSquare= function(col, row){
   const imageReplace = ("td#"+col+"."+row)
   console.log(imageReplace)
- jQuery = $(imageReplace).children()
-
-  if (jQuery.css('opacity')==0){
+ const $square = $(imageReplace).children()
+ console.log($square)
+  if ($square.attr('src')==''){
     return true;
-  }
-  if (jQuery.css('opacity')==1){
-  return false;
+  }  else{
+    return false
   }
 }
 
-
-//local storage
-
-function addToLocalUpdate (){
-  const localX = parseInt(localStorage.getItem("Xwin"))+1
-  const localO = parseInt(localStorage.getItem("Owin"))+1
-
-if (playerTurn===1){
-localStorage.setItem("Xwin", localX)
-}
-if (playerTurn===0){
-localStorage.setItem("Owin", localO)
-}
-  }
+jQuery(document).ready(function($){
+        $(this).click(function(){
+        var addClick= parseInt(localStorage.getItem("clicks"))+1
+        localStorage.setItem("clicks", addClick)
+        });
+    });
 
 
-
-const disappear= function(col, row){
+//sets image of chosen square
+const appear= function(col, row){
   const imageReplace = ("td#"+col+"."+row)
    jQuery = $(imageReplace).children()
+     if (playerTurn === 1){
+      jQuery.attr('src', 'https://www.pinclipart.com/picdir/big/176-1766362_red-x-cross-gif-clipart.png')
+      jQuery.fadeTo(300, 1)}
 
-   if (playerTurn === 1){
-    jQuery.attr('src', 'http://clipart-library.com/image_gallery/83903.png')
-    jQuery.css('opacity', '1')}
-
-   if (playerTurn === 0){
-    jQuery.attr('src', 'http://clipart-library.com/image_gallery/7606.png')
-    jQuery.css('opacity', '1')
-    }
+     if (playerTurn === 0){
+      jQuery.attr('src', 'https://i.ibb.co/PcYmFYL/favicon.png')
+      jQuery.fadeTo(300, 1)
+      }
 }
 
 
 $(document).ready(function(){
   console.log ('DOM is ready')
 
-$(document).ready(function(){
-  $( "#xStat" ).text("hello")
-  $( "#oStat" ).text("hello")
-})
-
   $('#easy').on("click", function(){
   ai = 1
-aiEasyFunc()})
+aiFunc()})
 
   $('#reset').on("click", function(){
   ai = 0
-aiEasyFunc()})
+aiFunc()})
 
   $('#medium').on("click", function(){
   ai = 2
-aiEasyFunc()})
+aiFunc()})
 
   $('#hard').on("click", function(){
   ai = 3
-aiEasyFunc()})
+aiFunc()})
+
+
+$('#gameSize').on("click", function(){
+  console.log('clicked!!')
+if (dimensions > 6){
+  dimensions=3
+  tableBuild()
+  resetNumber()
+}
+else {
+dimensions +=1
+  tableBuild()
+  resetNumber()
+}
+})
+
+$('#timedGame').on("click", function(){
+  console.log('clicked!')
+if (timedGames==0){
+  timedGames =1
+  timeFunc()}
+
+if (timedGames==1){
+  timedGames= 0
+}
+})
+
 });

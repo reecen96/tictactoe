@@ -1,6 +1,5 @@
 //https://gist.github.com/textchimp/afcb3ddc676dccd59ccb18cb9391c87a//
 
-
 //determines which AI type to use (0 = pvp, 1= easy(random), 2=Medium(pre determined moves), 3=)
 var ai= 0
 
@@ -11,7 +10,7 @@ function actionMove (col, row){
 }
 
 //determins which AI to use & if it is the AI's turn
-function aiEasyFunc(){
+function aiFunc(){
   if (playerTurn ==1){
     return
   }
@@ -25,25 +24,21 @@ function aiEasyFunc(){
   }
 }
 
-//random Math for easy AI
+//Easy AI (random moves)
 function pickSquare (){
   var col =0
   var row =0
   col = Math.floor(Math.random() * dimensions)
   row = Math.floor(Math.random() * dimensions)
-  console.log(col, row)
   actionMove(col,row)
-  // addXO(col, row, 0)
 }
 
-//Medium AI (tought moves)
+//Medium AI (pre-determined moves)
 function mediumAI(){
-console.log('hello')
-const random = Math.floor(Math.random() * dimensions)
-const r1 = Math.round((dimensions-1)/2)
-const r2 = 0
-const r3 = dimensions-1
-
+  const random = Math.floor(Math.random() * dimensions)
+  const r1 = Math.round((dimensions-1)/2)
+  const r2 = 0
+  const r3 = dimensions-1
 //move 1
   if (checkSquare(r3,r3)){
     actionMove(r3, r3)}
@@ -62,8 +57,15 @@ const r3 = dimensions-1
 //move 6
   else if (checkSquare(r1,0)){
     actionMove(r1, 0)}
-  //move 4
+//once moves made - random moves
   else {
-      actionMove(random, random)}
+      actionMove(random, random)
   return
-    }
+}}
+
+
+
+
+
+
+//---Minimax---//
